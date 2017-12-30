@@ -135,6 +135,7 @@ public class Manage_borrower extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tbl_returnBooks);
 
+        btn_ReturnBook.setFont(new java.awt.Font("Sylfaen", 1, 18)); // NOI18N
         btn_ReturnBook.setText("Return Book");
         btn_ReturnBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +143,7 @@ public class Manage_borrower extends javax.swing.JFrame {
             }
         });
 
+        btn_getDetails.setFont(new java.awt.Font("Sylfaen", 1, 18)); // NOI18N
         btn_getDetails.setText("Get Details");
         btn_getDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,11 +163,11 @@ public class Manage_borrower extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txt_returnBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(btn_getDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                        .addComponent(btn_getDetails)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
                         .addContainerGap())))
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addGap(210, 210, 210)

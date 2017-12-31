@@ -132,7 +132,7 @@ public class Manage_Books extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textealdoc = new javax.swing.JTextArea();
         book_date = new com.toedter.calendar.JDateChooser();
-        year_of_publications = new com.toedter.calendar.JDateChooser();
+        year_of_publications = new javax.swing.JTextField();
         jPanel20 = new javax.swing.JPanel();
         txt_supplier = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
@@ -529,8 +529,6 @@ public class Manage_Books extends javax.swing.JFrame {
 
         book_date.setDateFormatString("yyyy-MM-dd");
 
-        year_of_publications.setDateFormatString("yyyy-MM-dd");
-
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
@@ -561,7 +559,7 @@ public class Manage_Books extends javax.swing.JFrame {
                     .addComponent(txt_title)
                     .addComponent(txt_author)
                     .addComponent(book_date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(year_of_publications, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(year_of_publications))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel19Layout.setVerticalGroup(
@@ -604,10 +602,10 @@ public class Manage_Books extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(txt_publications, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(year_of_publications, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -752,7 +750,7 @@ public class Manage_Books extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
@@ -924,7 +922,7 @@ public class Manage_Books extends javax.swing.JFrame {
         txt_edition.setText(null);
         txt_volume.setText(null);
         txt_publications.setText(null);
-        year_of_publications.setDate(null); //publications date
+        year_of_publications.setText(null); //publications date
         textealdoc.setText(null);
         department.setSelectedItem("Select");
         txt_supplier.setText(null);
@@ -949,7 +947,7 @@ public class Manage_Books extends javax.swing.JFrame {
             pst.setString(7,txt_edition.getText());
             pst.setString(8,txt_volume.getText());
             pst.setString(9,txt_publications1.getText());
-            pst.setString(10,((JTextField)year_of_publications.getDateEditor().getUiComponent()).getText());
+            pst.setString(10,year_of_publications.getText());
             pst.setString(11,textealdoc.getText());
             pst.setString(12,(String)department.getSelectedItem());
             pst.setString(13,txt_supplier.getText());
@@ -1184,6 +1182,6 @@ public class Manage_Books extends javax.swing.JFrame {
     private javax.swing.JTextField txt_volume;
     private javax.swing.JTextField txt_volume1;
     private javax.swing.JTextField txt_year_of_publications1;
-    private com.toedter.calendar.JDateChooser year_of_publications;
+    private javax.swing.JTextField year_of_publications;
     // End of variables declaration//GEN-END:variables
 }

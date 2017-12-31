@@ -656,7 +656,7 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel19" min="-2" max="-2" attributes="0"/>
+                              <Component id="jPanel19" min="-2" pref="437" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
@@ -746,7 +746,7 @@
                               <Component id="txt_title" alignment="0" max="32767" attributes="0"/>
                               <Component id="txt_author" alignment="0" max="32767" attributes="0"/>
                               <Component id="book_date" alignment="0" max="32767" attributes="0"/>
-                              <Component id="year_of_publications" alignment="0" max="32767" attributes="0"/>
+                              <Component id="year_of_publications" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -801,11 +801,11 @@
                               <Component id="txt_publications" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                              <Component id="year_of_publications" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="year_of_publications" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jScrollPane1" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -940,10 +940,7 @@
                     <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
                   </Properties>
                 </Component>
-                <Component class="com.toedter.calendar.JDateChooser" name="year_of_publications">
-                  <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
-                  </Properties>
+                <Component class="javax.swing.JTextField" name="year_of_publications">
                 </Component>
               </SubComponents>
             </Container>

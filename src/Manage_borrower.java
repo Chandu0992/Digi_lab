@@ -1,3 +1,4 @@
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,12 +9,18 @@ import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.internet.ParseException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 /*
@@ -30,6 +37,8 @@ public class Manage_borrower extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
+    ResultSetMetaData data = null;
+
 
     /**
      * Creates new form Manage_borrower
@@ -60,12 +69,12 @@ public class Manage_borrower extends javax.swing.JFrame {
         jPanel15 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         txt_returnBooks = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_returnBooks = new javax.swing.JTable();
         btn_ReturnBook = new javax.swing.JButton();
         btn_getDetails = new javax.swing.JButton();
+        SearchCombo = new javax.swing.JComboBox<>();
         jPanel14 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -119,18 +128,15 @@ public class Manage_borrower extends javax.swing.JFrame {
             .addComponent(jLabel5)
         );
 
-        jLabel2.setFont(new java.awt.Font("Sylfaen", 1, 14)); // NOI18N
-        jLabel2.setText("Acc_No :");
-
         tbl_returnBooks.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Registration_Id", "Acc_No", "Issue_Date", "Today's Date", "No.Of.Days", "Fine", "Paid Status"
+
             }
         ));
         jScrollPane2.setViewportView(tbl_returnBooks);
@@ -151,6 +157,8 @@ public class Manage_borrower extends javax.swing.JFrame {
             }
         });
 
+        SearchCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "ACC-NO", "REG-ID" }));
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
@@ -159,12 +167,13 @@ public class Manage_borrower extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
+                        .addGap(5, 5, 5)
+                        .addComponent(SearchCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txt_returnBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(btn_getDetails)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                         .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
@@ -182,11 +191,11 @@ public class Manage_borrower extends javax.swing.JFrame {
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
                             .addComponent(txt_returnBooks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_getDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btn_getDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SearchCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_ReturnBook, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -382,7 +391,7 @@ public class Manage_borrower extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txt_Acc_No, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
@@ -444,7 +453,32 @@ public class Manage_borrower extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public static int daysBetween(Calendar day1, Calendar day2) {
+        Calendar dayOne = (Calendar) day1.clone(),
+                dayTwo = (Calendar) day2.clone();
 
+        if (dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR)) {
+            return Math.abs(dayOne.get(Calendar.DAY_OF_YEAR) - dayTwo.get(Calendar.DAY_OF_YEAR));
+        } else {
+            if (dayTwo.get(Calendar.YEAR) > dayOne.get(Calendar.YEAR)) {
+                //swap them
+                Calendar temp = dayOne;
+                dayOne = dayTwo;
+                dayTwo = temp;
+            }
+            int extraDays = 0;
+
+            int dayOneOriginalYearDays = dayOne.get(Calendar.DAY_OF_YEAR);
+
+            while (dayOne.get(Calendar.YEAR) > dayTwo.get(Calendar.YEAR)) {
+                dayOne.add(Calendar.YEAR, -1);
+                // getActualMaximum() important for leap years
+                extraDays += dayOne.getActualMaximum(Calendar.DAY_OF_YEAR);
+            }
+
+            return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays;
+        }
+    }
     private void tbl_barrowerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_barrowerMouseClicked
         // TODO add your handling code here:
         fetch_book();
@@ -481,7 +515,7 @@ public void CurrentDate(){
                         int mm = cal.get(Calendar.MONTH);
                         int yy = cal.get(Calendar.YEAR);
                         int dd = cal.get(Calendar.DAY_OF_MONTH);
-                        current_dt.setText(dd+"/"+(mm+1)+"/"+yy);
+                        current_dt.setText(yy+"/"+(mm+1)+"/"+dd);
                         try 
                         {
                         sleep(1000);
@@ -494,8 +528,72 @@ public void CurrentDate(){
     clock.start();
 }
     private void btn_getDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_getDetailsActionPerformed
-        // TODO add your handling code here:
-       // issue_book_details();
+      try{
+        txt_returnBooks.setVisible(false);
+        String sql ;
+        if (SearchCombo.getSelectedItem() == "Acc-no") {
+            txt_returnBooks.setVisible(true);
+            sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Acc_No='" + txt_returnBooks.getText() + "'";
+        } else if (SearchCombo.getSelectedItem() == "Reg-id") {
+            txt_returnBooks.setVisible(true);
+            sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Registration_Id='" + txt_returnBooks.getText() + "'";
+            
+        } else {
+            sql = "select * from issue_books";
+            txt_returnBooks.setVisible(false);
+        }
+        
+        Date date = new Date();
+        Date date0, date1;
+        Calendar cal1, cal2;
+        String[] colum = new String[15];
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int diff, fine, count = 0;
+        date0 = sdf.parse(sdf.format(date));
+        cal1 = Calendar.getInstance();
+        cal2 = Calendar.getInstance();
+        cal1.setTime(date0);
+       
+        try {
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            ResultSetMetaData data = rs.getMetaData();
+            
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String header[] = new String[]{"Sno", "Registration_Id", "Acc_No", "Issue_Date",
+                "Today Date", "Days", "Fine"};
+            dm.setColumnIdentifiers(header);
+            tbl_returnBooks.setModel(dm);
+            Vector<Object> data1 = new Vector<Object>();
+            while (rs.next()) {
+                count++;
+                data1.add(count);
+                data1.add(rs.getString("Registration_Id"));
+                data1.add(rs.getString("Acc_No"));
+                data1.add(rs.getString("Issue_Date"));
+                date1 = sdf.parse(rs.getString("Issue_Date"));
+                cal2.setTime(date1);
+                diff = daysBetween(cal1, cal2);
+                if (diff > 14) {
+                    fine = diff - 14;
+                } else {
+                    fine = 0;
+                }
+                data1.add(current_dt.getText());
+                data1.add(String.valueOf(diff));
+                data1.add(String.valueOf(fine));
+                //System.out.println("test :- " + count);
+                dm.addRow(data1);
+            }
+            
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(Manage_borrower.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      } catch (java.text.ParseException ex) {
+            Logger.getLogger(Manage_borrower.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }//GEN-LAST:event_btn_getDetailsActionPerformed
 
    public void DynamicNumber(){
@@ -673,6 +771,7 @@ public void fetch_book(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> SearchCombo;
     private javax.swing.JButton btn_ReturnBook;
     private javax.swing.JButton btn_getDetails;
     private javax.swing.JButton btn_issuebook;
@@ -681,7 +780,6 @@ public void fetch_book(){
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

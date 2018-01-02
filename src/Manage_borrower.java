@@ -1,3 +1,4 @@
+
 import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class Manage_borrower extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     ResultSetMetaData data = null;
-
 
     /**
      * Creates new form Manage_borrower
@@ -157,7 +157,7 @@ public class Manage_borrower extends javax.swing.JFrame {
             }
         });
 
-        SearchCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "ACC-NO", "REG-ID" }));
+        SearchCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "ACC-ID", "REG-ID" }));
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -173,7 +173,7 @@ public class Manage_borrower extends javax.swing.JFrame {
                         .addComponent(txt_returnBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(btn_getDetails)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                         .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
@@ -504,113 +504,115 @@ public class Manage_borrower extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tbl_barrowerMouseClicked
-public void CurrentDate(){
-            Thread clock = new Thread()
-	{
-		public void run()
-		{
-			for(;;)
-			{
-                        Calendar cal = new GregorianCalendar();
-                        int mm = cal.get(Calendar.MONTH);
-                        int yy = cal.get(Calendar.YEAR);
-                        int dd = cal.get(Calendar.DAY_OF_MONTH);
-                        current_dt.setText(yy+"/"+(mm+1)+"/"+dd);
-                        try 
-                        {
+    public void CurrentDate() {
+        Thread clock = new Thread() {
+            public void run() {
+                for (;;) {
+                    Calendar cal = new GregorianCalendar();
+                    int mm = cal.get(Calendar.MONTH);
+                    int yy = cal.get(Calendar.YEAR);
+                    int dd = cal.get(Calendar.DAY_OF_MONTH);
+                    current_dt.setText(yy + "/" + (mm + 1) + "/" + dd);
+                    try {
                         sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Home_Student.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-		}	
-	};
-    clock.start();
-}
-    private void btn_getDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_getDetailsActionPerformed
-      try{
-        txt_returnBooks.setVisible(false);
-        String sql ;
-        if (SearchCombo.getSelectedItem() == "Acc-no") {
-            txt_returnBooks.setVisible(true);
-            sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Acc_No='" + txt_returnBooks.getText() + "'";
-        } else if (SearchCombo.getSelectedItem() == "Reg-id") {
-            txt_returnBooks.setVisible(true);
-            sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Registration_Id='" + txt_returnBooks.getText() + "'";
-            
-        } else {
-            sql = "select * from issue_books";
-            txt_returnBooks.setVisible(false);
-        }
-        
-        Date date = new Date();
-        Date date0, date1;
-        Calendar cal1, cal2;
-        String[] colum = new String[15];
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        int diff, fine, count = 0;
-        date0 = sdf.parse(sdf.format(date));
-        cal1 = Calendar.getInstance();
-        cal2 = Calendar.getInstance();
-        cal1.setTime(date0);
-       
-        try {
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            ResultSetMetaData data = rs.getMetaData();
-            
-            DefaultTableModel dm = new DefaultTableModel(0, 0);
-            String header[] = new String[]{"Sno", "Registration_Id", "Acc_No", "Issue_Date",
-                "Today Date", "Days", "Fine"};
-            dm.setColumnIdentifiers(header);
-            tbl_returnBooks.setModel(dm);
-            Vector<Object> data1 = new Vector<Object>();
-            while (rs.next()) {
-                count++;
-                data1.add(count);
-                data1.add(rs.getString("Registration_Id"));
-                data1.add(rs.getString("Acc_No"));
-                data1.add(rs.getString("Issue_Date"));
-                date1 = sdf.parse(rs.getString("Issue_Date"));
-                cal2.setTime(date1);
-                diff = daysBetween(cal1, cal2);
-                if (diff > 14) {
-                    fine = diff - 14;
-                } else {
-                    fine = 0;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home_Student.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                data1.add(current_dt.getText());
-                data1.add(String.valueOf(diff));
-                data1.add(String.valueOf(fine));
-                //System.out.println("test :- " + count);
-                dm.addRow(data1);
             }
+        };
+        clock.start();
+    }
+    private void btn_getDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_getDetailsActionPerformed
+        
+            txt_returnBooks.setEditable(true);
             
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(rootPane, e);
+            try {
+                String sql;
+            if (SearchCombo.getSelectedItem() == "ACC-ID") {
+                txt_returnBooks.setEditable(true);
+                sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Acc_No ='" + txt_returnBooks.getText() + "'";
+                
+            } else if (SearchCombo.getSelectedItem() == "REG-ID") {
+                txt_returnBooks.setEditable(true);
+                sql = "select Acc_No,Registration_Id,Issue_Date from issue_books where Registration_Id ='" + txt_returnBooks.getText() + "'";
+            } else {
+                txt_returnBooks.setEditable(false);
+                sql = "select * from issue_books";
+            }
+
+            Date date = new Date();
+            Date date0, date1;
+            Calendar cal1, cal2;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            int diff, fine, count = 0;
+            date0 = sdf.parse(sdf.format(date));
+            cal1 = Calendar.getInstance();
+            cal2 = Calendar.getInstance();
+            cal1.setTime(date0);
+
+            try {
+                pst = conn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                ResultSetMetaData data = rs.getMetaData();
+
+                DefaultTableModel dm = new DefaultTableModel();
+                String header[] = new String[]{"Sno", "Registration_Id", "Acc_No", "Issue_Date",
+                    "Today Date", "Days", "Fine"};
+                dm.setColumnIdentifiers(header);
+                tbl_returnBooks.setModel(dm);
+                
+                while (rs.next()) {
+                    Vector<Object> data1 = new Vector<>();
+                    data1.add(++count);
+                    data1.add(rs.getString("Registration_Id"));
+                    data1.add(rs.getString("Acc_No"));
+                    data1.add(rs.getString("Issue_Date"));
+                    date1 = sdf.parse(rs.getString("Issue_Date"));
+                    cal2.setTime(date1);
+                    diff = daysBetween(cal1, cal2);
+                    if (diff > 14) {
+                        fine = diff - 14;
+                    } else {
+                        fine = 0;
+                    }
+                    data1.add(current_dt.getText());
+                    data1.add(String.valueOf(diff));
+                    data1.add(String.valueOf(fine));
+                    
+                    dm.addRow(data1);
+                    //dm.fireTableDataChanged();
+                    //tbl_returnBooks.repaint();
+                    //tbl_returnBooks.setModel(dm);
+                   
+                    
+                }
+                
+            } catch (HeadlessException | SQLException e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            } catch (java.text.ParseException ex) {
+                Logger.getLogger(Manage_borrower.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (java.text.ParseException ex) {
             Logger.getLogger(Manage_borrower.class.getName()).log(Level.SEVERE, null, ex);
         }
-      } catch (java.text.ParseException ex) {
-            Logger.getLogger(Manage_borrower.class.getName()).log(Level.SEVERE, null, ex);
-      }
     }//GEN-LAST:event_btn_getDetailsActionPerformed
 
-   public void DynamicNumber(){
-        String sql1 = "select Mobile from registration where Registration_Id =(select Registration_Id from issue_books where Acc_No = '"+txt_Acc_No.getText()+"' and Status = 'Pending')";
-            try{
-                pst=conn.prepareStatement(sql1);
-                rs=pst.executeQuery();
-                if(rs.next()){
+    public void DynamicNumber() {
+        String sql1 = "select Mobile from registration where Registration_Id =(select Registration_Id from issue_books where Acc_No = '" + txt_Acc_No.getText() + "' and Status = 'Pending')";
+        try {
+            pst = conn.prepareStatement(sql1);
+            rs = pst.executeQuery();
+            if (rs.next()) {
                 lbl_mob.setText(rs.getString("Mobile"));
-                }
             }
-            catch(SQLException e){
-                JOptionPane.showMessageDialog(rootPane, e);
-            }
-            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+
     }
-    public void sendMsg(){
+
+    public void sendMsg() {
         DynamicNumber();
         String acc_no = txt_Acc_No.getText();
         /*Send SMS using JAVA*/
@@ -621,73 +623,71 @@ public void CurrentDate(){
         //JOptionPane.showMessageDialog(rootPane, num);
         //Multiple mobiles numbers separated by comma
         //String mobiles = "918985153464"; Mobile Number
-        String mobiles = "91"+num;
+        String mobiles = "91" + num;
         //Sender ID,While using route4 sender id should be 6 characters long.
         String senderId = "MSGIND";
         //Your message to send, Add URL encoding here.
-        String message = "Your Request Sucessfully Processed with the Acc_No :"+acc_no;
+        String message = "Your Request Sucessfully Processed with the Acc_No :" + acc_no;
         JOptionPane.showMessageDialog(rootPane, "Message Send Sucessfully");
         //define route
-        String route="4";
+        String route = "4";
 
         //Prepare Url
-        URLConnection myURLConnection=null;
-        URL myURL=null;
-        BufferedReader reader=null;
+        URLConnection myURLConnection = null;
+        URL myURL = null;
+        BufferedReader reader = null;
 
         //encoding message 
-        String encoded_message=URLEncoder.encode(message);
+        String encoded_message = URLEncoder.encode(message);
 
         //Send SMS API
-        String mainUrl="https://control.msg91.com/api/sendhttp.php?";
+        String mainUrl = "https://control.msg91.com/api/sendhttp.php?";
 
         //Prepare parameter string 
-        StringBuilder sbPostData= new StringBuilder(mainUrl);
-        sbPostData.append("authkey="+authkey); 
-        sbPostData.append("&mobiles="+mobiles);
-        sbPostData.append("&message="+encoded_message);
-        sbPostData.append("&route="+route);
-        sbPostData.append("&sender="+senderId);
+        StringBuilder sbPostData = new StringBuilder(mainUrl);
+        sbPostData.append("authkey=" + authkey);
+        sbPostData.append("&mobiles=" + mobiles);
+        sbPostData.append("&message=" + encoded_message);
+        sbPostData.append("&route=" + route);
+        sbPostData.append("&sender=" + senderId);
 
         //final string
         mainUrl = sbPostData.toString();
-        try
-        {
+        try {
             //prepare connection
             myURL = new URL(mainUrl);
             myURLConnection = myURL.openConnection();
             myURLConnection.connect();
-            reader= new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
+            reader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
             //reading response 
             String response;
-            while ((response = reader.readLine()) != null) 
-            //print response 
-            System.out.println(response);
-    
+            while ((response = reader.readLine()) != null) //print response 
+            {
+                System.out.println(response);
+            }
+
             //finally close connection
             reader.close();
-        } 
-        catch (IOException e) 
-        { 
+        } catch (IOException e) {
             e.printStackTrace();
-        } 
-}
+        }
+    }
     private void btn_issuebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_issuebookActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             String msg = txt_Acc_No.getText();
             String value = lbl_change.getText();
             String sql;
-            sql = "update issue_books set Status='"+value+"' where Acc_No='"+msg+"' ";
+            sql = "update issue_books set Status='" + value + "' where Acc_No='" + msg + "' ";
             pst = conn.prepareStatement(sql);
             pst.execute();
             JOptionPane.showMessageDialog(rootPane, "Book Issued Sucessfully !");
             sendMsg();
             updateHistory();
-        }catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e);
         }
-        
+
     }//GEN-LAST:event_btn_issuebookActionPerformed
 
     private void txt_Acc_NoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_Acc_NoKeyReleased
@@ -697,33 +697,33 @@ public void CurrentDate(){
     private void btn_ReturnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReturnBookActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_ReturnBookActionPerformed
-public void fetch_book(){
-    //String acc_no ;
-    String sql = "select * from books where Acc_No = ?";
+    public void fetch_book() {
+        //String acc_no ;
+        String sql = "select * from books where Acc_No = ?";
         try {
-                pst = conn.prepareStatement(sql);
-                pst.setString(1,txt_Acc_No.getText());
-                rs = pst.executeQuery();
-                if(rs.next()){
-                    lbl_callno.setText(rs.getString("Call_No"));
-                    lbl_author.setText(rs.getString("Author"));
-                    lbl_title.setText(rs.getString("Title"));
-                    lbl_edition.setText(rs.getString("Edition"));
-                    lbl_dept.setText(rs.getString("Department"));
-               }
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_Acc_No.getText());
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                lbl_callno.setText(rs.getString("Call_No"));
+                lbl_author.setText(rs.getString("Author"));
+                lbl_title.setText(rs.getString("Title"));
+                lbl_edition.setText(rs.getString("Edition"));
+                lbl_dept.setText(rs.getString("Department"));
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "This Is Not a Valid Acc_No !");
-        }
-        finally{
-            try{
+        } finally {
+            try {
                 rs.close();
                 pst.close();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
-}    private void updateHistory() {
+    }
+
+    private void updateHistory() {
         try {
             String sql = "Select Acc_No,Registration_Id,Status from issue_books";
             pst = conn.prepareStatement(sql);
@@ -733,7 +733,6 @@ public void fetch_book(){
             JOptionPane.showMessageDialog(rootPane, e);
         }
     }
-    
 
     /**
      * @param args the command line arguments
